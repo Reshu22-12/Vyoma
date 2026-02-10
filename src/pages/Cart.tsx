@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
@@ -18,6 +18,7 @@ const Cart = () => {
     0
   );
 
+  // EMPTY CART
   if (cart.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-20 text-center">
@@ -37,7 +38,7 @@ const Cart = () => {
     <section className="bg-gray-100 py-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* LEFT SIDE – CART ITEMS */}
+        {/* LEFT – CART ITEMS */}
         <div className="lg:col-span-2 bg-white rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-6">
             Shopping Cart
@@ -48,20 +49,26 @@ const Cart = () => {
               key={item.id}
               className="flex gap-4 py-6 border-b last:border-b-0"
             >
-              {/* IMAGE */}
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-28 h-28 object-contain border rounded"
-              />
+              {/* IMAGE (CLICKABLE) */}
+              <Link to={`/product/${item.id}`}>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-28 h-28 object-contain border rounded cursor-pointer"
+                />
+              </Link>
 
               {/* DETAILS */}
               <div className="flex-1">
-                <h3 className="font-medium text-lg">
+                {/* NAME (CLICKABLE) */}
+                <Link
+                  to={`/product/${item.id}`}
+                  className="font-medium text-lg hover:text-blue-600"
+                >
                   {item.name}
-                </h3>
+                </Link>
 
-                <p className="text-green-600 text-sm">
+                <p className="text-green-600 text-sm mt-1">
                   In stock
                 </p>
 
@@ -109,7 +116,7 @@ const Cart = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE – SUMMARY */}
+        {/* RIGHT – SUMMARY */}
         <div className="bg-white rounded-lg p-6 h-fit">
           <p className="text-green-700 text-sm mb-3">
             ✔ Your order qualifies for FREE Delivery

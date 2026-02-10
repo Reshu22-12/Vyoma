@@ -1,6 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 
-/* TYPES */
 export type CartItem = {
   id: number;
   name: string;
@@ -12,19 +16,17 @@ export type CartItem = {
 type CartContextType = {
   cart: CartItem[];
   addToCart: (product: Omit<CartItem, "quantity">) => void;
+  removeFromCart: (id: number) => void;
   increaseQty: (id: number) => void;
   decreaseQty: (id: number) => void;
-  removeFromCart: (id: number) => void;
-  clearCart: () => void; // ✅ ADD THIS
 };
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | null>(null);
 
-/* PROVIDER */
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  /* ADD TO CART */
+  // ✅ ADD TO CART
   const addToCart = (product: Omit<CartItem, "quantity">) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
@@ -41,7 +43,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  /* INCREASE */
+  // ✅ REMOVE COMPLETELY
+  const removeFromCart = (id: number) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  // ✅ INCREASE QTY
   const increaseQty = (id: number) => {
     setCart((prev) =>
       prev.map((item) =>
@@ -52,7 +59,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  /* DECREASE */
+  // ✅ DECREASE QTY
   const decreaseQty = (id: number) => {
     setCart((prev) =>
       prev
@@ -65,25 +72,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  /* REMOVE */
-  const removeFromCart = (id: number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  /* ✅ CLEAR CART */
-  const clearCart = () => {
-    setCart([]);
-  };
-
   return (
     <CartContext.Provider
       value={{
         cart,
         addToCart,
+        removeFromCart,
         increaseQty,
         decreaseQty,
-        removeFromCart,
-        clearCart,
       }}
     >
       {children}
@@ -91,11 +87,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-/* HOOK */
+// ✅ SAFE HOOK
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCart must be used within CartProvider");
+    throw new Error("useCart must be used inside CartProvider");
   }
   return context;
 };
