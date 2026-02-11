@@ -9,6 +9,11 @@ import p5 from "@/assets/images/product/tablet.jpg";
 import p6 from "@/assets/images/product/vitamin.jpg";
 import p7 from "@/assets/images/product/books.jpg";
 import p8 from "@/assets/images/product/pen.jpg";
+import p9 from "@/assets/images/product/rice.jpg";
+import p10 from "@/assets/images/product/dal.jpg";
+import p11 from "@/assets/images/product/food1.jpg";
+import p12 from "@/assets/images/product/biriyani.jpg";
+
 
 /* TEMP DATA (API later) */
 const products = [
@@ -23,6 +28,12 @@ const products = [
 
   { id: 7, name: "Notebook", price: 50, image: p7, category: "stationary" },
   { id: 8, name: "Pen Pack", price: 40, image: p8, category: "stationary" },
+
+  { id: 9, name: "India Gate Basmathi Rice", price: 450, image: p9, category: "general" },
+  { id: 10, name: "Tata Dal", price: 140, image: p10, category: "general" },
+
+  { id: 11, name: "Chicken Lolipop", price: 250, image: p11, category: "food" },
+  { id: 12, name: "Chicken Biriyani", price: 150, image: p12, category: "food" },
 ];
 
 const CategoryProducts = () => {

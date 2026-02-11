@@ -6,6 +6,7 @@ import FeaturedCategories from "@/components/categories/FeaturedCategories";
 import HotSelling from "@/components/products/HotSelling";
 import Recommended from "@/components/products/Recommended";
 import AdCarousel from "@/components/carousel/AdCarousel";
+import QuickExplore from "@/components/home/QuickExplore";
 
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
       <FeaturedCategories />
       <HotSelling />
       <Recommended />
+       <QuickExplore />
     </div>
   );
 };

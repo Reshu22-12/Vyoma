@@ -1,28 +1,15 @@
 import ProductCard from "@/components/products/ProductCard";
-
-/* ✅ reuse existing images */
-import p1 from "@/assets/images/image.jpg";
-import p2 from "@/assets/images/image2.jpg";
-import p3 from "@/assets/images/image3.jpg";
-import p4 from "@/assets/images/image4.jpg";
-
-/* ✅ products data */
-const products = [
-  { id: 1, name: "Organic Vegetables", price: 120, image: p1 },
-  { id: 2, name: "Fresh Milk Pack", price: 50, image: p2 },
-  { id: 3, name: "Daily Snacks Combo", price: 99, image: p3 },
-  { id: 4, name: "Premium Rice 5kg", price: 450, image: p4 },
-  { id: 5, name: "Bread Pack", price: 35, image: p1 },
-  
-];
+import { products } from "@/data/products";
 
 const Recommended = () => {
+  const recommendedProducts = products.filter(
+    (item) => item.category === "grocery"
+  );
+
   return (
-    /* ✅ SAME spacing as other sections */
-    <section className="py-12 bg-white">
+    <section className="pt-0 py-12 bg-white">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Header */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">
             Recommended For You
@@ -33,18 +20,26 @@ const Recommended = () => {
           </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-0">
+        <div className="
+          grid
+          grid-cols-2
+          gap-4
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-5
+        ">
 
-          {products.map((item) => (
+          {recommendedProducts.map((item) => (
             <ProductCard
-  id={item.id}
-  name={item.name}
-  price={item.price}
-  image={item.image}
-/>
-
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              price={item.price}
+              image={item.image}
+              size="small"
+            />
           ))}
+
         </div>
 
       </div>

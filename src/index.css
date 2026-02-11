@@ -7,49 +7,48 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* Marquee animation */
 @keyframes marquee {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+/* Pause on hover */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition duration-200;
+}
+
+.btn-secondary {
+  @apply bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200;
+}
+
+.btn-warning {
+  @apply bg-yellow-400 hover:bg-yellow-500 text-black rounded-full font-semibold transition duration-200;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
     transform: translateX(-50%);
   }
 }
 
 .animate-marquee {
-  animation: marquee 18s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-@import "swiper/css";
-@import "swiper/css/effect-coverflow";
-@import "swiper/css/navigation";
-/* =========================
-   SWIPER CLEAN SAFE STYLES
-   ========================= */
-
-/* allow side slides visible */
-.swiper {
-  overflow: visible !important;
-}
-
-/* center slides nicely */
-.swiper-slide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* remove default arrows if present */
-.swiper-button-next,
-.swiper-button-prev {
-  display: none !important;
-}
-
-/* remove pagination dots if not needed */
-.swiper-pagination {
-  display: none !important;
-}

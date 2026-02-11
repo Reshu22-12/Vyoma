@@ -5,6 +5,7 @@ import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import CategoryProducts from "@/pages/CategoryProducts";
 import Wishlist from "@/pages/Wishlist";
+import ProductDetails from "@/pages/ProductDetails";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/category/:slug" element={<CategoryProducts />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
       </Route>
 

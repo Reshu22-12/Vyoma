@@ -1,57 +1,84 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
-import WishlistButton from "@/components/common/WishlistButton";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   id: number;
   name: string;
   price: number;
   image: string;
+  size?: "small" | "medium";
 };
 
-const ProductCard = ({ id, name, price, image }: Props) => {
+const ProductCard = ({
+  id,
+  name,
+  price,
+  image,
+  size = "medium",
+}: Props) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  const cardSize =
+    size === "small"
+      ? "w-[200px]"
+      : "w-full";
+
+  const imageHeight =
+    size === "small"
+      ? "h-[130px]"
+      : "h-[160px]";
+
   return (
     <div
-      className="
+      className={`
         bg-white
-        rounded-2xl
+        rounded-xl
         shadow-sm
-        hover:shadow-lg
+        hover:shadow-md
         transition
         cursor-pointer
-        w-[220px]
-      "
-      onClick={() => navigate(`/product/${id}`)}
+        ${cardSize}
+      `}
+      onClick={() => {
+  console.log("Navigating with id:", id);
+  navigate(`/product/${id}`);
+}}
+
     >
       {/* IMAGE */}
-      <div className="relative h-[180px] bg-gray-50 flex items-center justify-center p-4">
-  <img src={image} alt={name} className="h-full object-contain" />
-
-  <WishlistButton
-    product={{ id, name, price, image }}
-  />
-</div>
-
+      <div className={`${imageHeight} flex items-center justify-center p-3`}>
+        <img
+          src={image}
+          alt={name}
+          className="h-full object-contain"
+        />
+      </div>
 
       {/* CONTENT */}
-      <div className="p-4 space-y-2">
+      <div className="p-3 space-y-1">
         <p className="text-sm font-medium truncate">
           {name}
         </p>
 
-        <p className="text-lg font-bold text-blue-600">
+        <p className="text-base font-semibold text-blue-600">
           ₹ {price}
         </p>
 
-        {/* ADD TO CART */}
         <Button
-          className="w-full rounded-xl bg-blue-500 text-white"
+          className="
+            w-full
+            mt-2
+            py-2
+            text-sm
+            rounded-lg
+            bg-blue-600
+            hover:bg-blue-700
+            text-white
+          "
           onClick={(e) => {
-            e.stopPropagation(); // 🚫 stop card navigation
+            e.stopPropagation();
             addToCart({ id, name, price, image });
           }}
         >
