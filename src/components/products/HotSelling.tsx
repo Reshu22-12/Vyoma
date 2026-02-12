@@ -1,36 +1,29 @@
-import ProductCard from "@/components/products/ProductCard";
 import { products } from "@/data/products";
+import ProductCard from "@/components/products/ProductCard";
 
 const HotSelling = () => {
-  const hotProducts = products.filter(
-    (item) => item.category === "electronics"
-  );
-
   return (
-    <section className="pt-0 py-10 pb-2 overflow-hidden">
+    <section className="py-10 overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6">
-
-        <h2 className="text-2xl font-bold text-royal pb-6">
+        <h2 className="text-2xl font-bold mb-6">
           Hot Selling
         </h2>
 
         <div className="relative overflow-hidden">
-          <div className="flex gap-6 animate-marquee">
-
-            {[...hotProducts, ...hotProducts].map((item) => (
-              <ProductCard
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                image={item.image}
-                size="small"
-              />
+          <div className="marquee flex">
+            {[...products, ...products].map((item, index) => (
+              <div key={index} className="mr-6 shrink-0">
+                <ProductCard
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                  weight={item.weight}
+                />
+              </div>
             ))}
-
           </div>
         </div>
-
       </div>
     </section>
   );

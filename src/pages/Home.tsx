@@ -7,6 +7,7 @@ import HotSelling from "@/components/products/HotSelling";
 import Recommended from "@/components/products/Recommended";
 import AdCarousel from "@/components/carousel/AdCarousel";
 import QuickExplore from "@/components/home/QuickExplore";
+import MidAdCarousel from "@/components/carousel/MidAdCarousel"
 
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
       <AdCarousel />
       <FeaturedCategories />
       <HotSelling />
+      <MidAdCarousel />
       <Recommended />
        <QuickExplore />
     </div>

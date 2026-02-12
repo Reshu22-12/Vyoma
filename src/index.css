@@ -8,38 +8,17 @@
   scrollbar-width: none;
 }
 /* Marquee animation */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee-track {
+.marquee {
+  display: flex;
   width: max-content;
-  animation: marquee 25s linear infinite;
+  animation: scroll-left 25s linear infinite;
 }
 
-/* Pause on hover */
-.marquee-track:hover {
+.marquee:hover {
   animation-play-state: paused;
 }
 
-.btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition duration-200;
-}
-
-.btn-secondary {
-  @apply bg-green-600 hover:bg-green-700 text-white rounded-xl transition duration-200;
-}
-
-.btn-warning {
-  @apply bg-yellow-400 hover:bg-yellow-500 text-black rounded-full font-semibold transition duration-200;
-}
-
-@keyframes marquee {
+@keyframes scroll-left {
   0% {
     transform: translateX(0%);
   }
@@ -48,7 +27,23 @@
   }
 }
 
-.animate-marquee {
-  animation: marquee 25s linear infinite;
+
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow transition;
+  }
+
+  .btn-secondary {
+    @apply bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition;
+  }
+
+  .card-base {
+    @apply bg-white rounded-xl shadow-sm hover:shadow-md transition;
+  }
 }
+
+
+
+
 
