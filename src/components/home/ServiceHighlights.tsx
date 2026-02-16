@@ -31,7 +31,7 @@ const ServiceHighlights = () => {
         <div className="bg-blue-100 rounded-xl px-10 py-6">
           
           {/* ICON ROW */}
-          <div className="flex justify-between gap-10 overflow-x-auto sm:overflow-visible">
+          <div className="flex justify-between gap-10 overflow-x-auto sm:overflow-visible scrollbar-hide">
             {features.map((item, index) => (
               <div
                 key={index}

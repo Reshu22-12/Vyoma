@@ -16,7 +16,7 @@ const shops = [
 
 const TopShops = () => {
   return (
-    <section className="pt-5 pb-0py-10 bg-gray-50">
+    <section className="pt-5 pb-0 py-10 bg-gray-50 ">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header */}

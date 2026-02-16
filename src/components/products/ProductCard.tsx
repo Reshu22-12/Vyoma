@@ -139,13 +139,15 @@ const ProductCard = ({
           size="sm"
           className="
             bg-white
-            text-green-600
-            border border-green-600
+            text-blue-600
+            border border-blue-600
             hover:bg-green-50
             px-4
             text-xs
             font-semibold
             rounded-md
+            hover:text-white
+            hover:bg-blue-600
           "
           onClick={(e) => {
             e.stopPropagation();
