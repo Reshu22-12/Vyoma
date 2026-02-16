@@ -1,90 +1,87 @@
-import { useNavigate } from "react-router-dom";
-import { useCart } from "@/context/CartContext";
-import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
 
-type Props = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  size?: "small" | "medium";
-};
+interface ProductCardProps {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    rating?: number;
+    reviews?: number;
+    originalPrice?: number;
+  };
+}
 
-const ProductCard = ({
-  id,
-  name,
-  price,
-  image,
-  size = "medium",
-}: Props) => {
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
-
-  const cardSize =
-    size === "small"
-      ? "w-[200px]"
-      : "w-full";
-
-  const imageHeight =
-    size === "small"
-      ? "h-[130px]"
-      : "h-[160px]";
+const ProductCard = ({ product }: ProductCardProps) => {
+if (!product) return null;
 
   return (
-    <div
-      className={`
-        bg-white
-        rounded-xl
-        shadow-sm
-        hover:shadow-md
-        transition
-        cursor-pointer
-        ${cardSize}
-      `}
-      onClick={() => {
-  console.log("Navigating with id:", id);
-  navigate(`/product/${id}`);
-}}
+    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 p-4 relative group">
 
-    >
-      {/* IMAGE */}
-      <div className={`${imageHeight} flex items-center justify-center p-3`}>
-        <img
-          src={image}
-          alt={name}
-          className="h-full object-contain"
+      {/* Badge */}
+      <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-md">
+        NEW
+      </span>
+
+      {/* Image */}
+      <div className="overflow-hidden rounded-lg">
+        <img src={product?.image || "/placeholder.png"} 
+
+          alt={product?.name || "Product"}
+          className="w-full h-48 object-contain group-hover:scale-105 transition duration-300"
         />
       </div>
 
-      {/* CONTENT */}
-      <div className="p-3 space-y-1">
-        <p className="text-sm font-medium truncate">
-          {name}
-        </p>
+      {/* Title */}
+      <h3 className="mt-3 font-semibold text-gray-800">
+        {product.name}
+      </h3>
 
-        <p className="text-base font-semibold text-blue-600">
-          ₹ {price}
-        </p>
-
-        <Button
-          className="
-            w-full
-            mt-2
-            py-2
-            text-sm
-            rounded-lg
-            bg-blue-600
-            hover:bg-blue-700
-            text-white
-          "
-          onClick={(e) => {
-            e.stopPropagation();
-            addToCart({ id, name, price, image });
-          }}
-        >
-          Add to Cart
-        </Button>
+      {/* Rating */}
+      <div className="flex items-center mt-1">
+        {[...Array(5)].map((_, index) => (
+          <Star
+            key={index}
+            size={16}
+            className={
+              index < (product.rating || 4)
+                ? "text-yellow-400 fill-yellow-400"
+                : "text-gray-300"
+            }
+          />
+        ))}
+        <span className="ml-2 text-sm text-gray-500">
+          ({product.reviews || 120})
+        </span>
       </div>
+
+      {/* Price */}
+      <div className="mt-2">
+  {product.originalPrice && (
+    <p className="text-sm text-gray-400 line-through">
+      ₹ {product.originalPrice}
+    </p>
+  )}
+
+  <p className="text-blue-600 font-bold text-lg">
+    ₹ {product.price}
+  </p>
+
+  {product.originalPrice && (
+    <p className="text-green-600 text-sm font-medium">
+      {Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )}
+      % OFF
+    </p>
+  )}
+</div>
+
+
+      {/* Button */}
+      <button className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
+        Add to Cart
+      </button>
     </div>
   );
 };
