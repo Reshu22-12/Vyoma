@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import Home from "@/pages/Home";
@@ -8,6 +7,8 @@ import CategoryProducts from "@/pages/CategoryProducts";
 import Wishlist from "@/pages/Wishlist";
 import ProductDetails from "@/pages/ProductDetails";
 import CreateShop from "@/pages/vendor/CreateShop";
+import VendorDashboard from "@/pages/vendor/VendorDashboard";
+
 
 const AppRoutes = () => {
   return (
@@ -19,7 +20,10 @@ const AppRoutes = () => {
         <Route path="/category/:slug" element={<CategoryProducts />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+
+         {/* Vendor */}
         <Route path="/vendor/create-shop" element={<CreateShop />} />
+        <Route path="/vendor/dashboard" element={<VendorDashboard />} />
       </Route>
 
       {/* Auth Routes */}

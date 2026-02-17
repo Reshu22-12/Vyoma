@@ -2,95 +2,66 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const API = import.meta.env.VITE_API_BASE_URL;
-
 const Register = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    email: "",
-    role: "customer",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
-      await axios.post(`${API}/auth/register`, form);
+      await axios.post("http://localhost:8000/api/v1/auth/register", {
+        name: form.name,
+        phone: form.phone,
+      });
+
       alert("Registered successfully ✅");
       navigate("/login");
+
     } catch (error: any) {
-      alert(error.response?.data?.message || "Registration failed ❌");
+      console.error(error.response?.data || error.message);
+      alert("Registration failed ❌");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-md w-96"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Create Account
-        </h2>
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+      <h2 className="text-2xl font-bold mb-6">Create Account</h2>
 
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="name"
           placeholder="Full Name"
-          className="input"
           onChange={handleChange}
+          className="w-full border p-2 rounded"
           required
         />
 
         <input
           name="phone"
-          placeholder="Phone Number"
-          className="input"
+          placeholder="Mobile Number"
           onChange={handleChange}
+          className="w-full border p-2 rounded"
           required
         />
 
-        <input
-          name="email"
-          placeholder="Email"
-          className="input"
-          onChange={handleChange}
-        />
-
-        <select
-          name="role"
-          className="input"
-          onChange={handleChange}
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded"
         >
-          <option value="customer">Customer</option>
-          <option value="vendor">Vendor</option>
-        </select>
-
-        <button className="btn-primary mt-4 w-full">
           Register
         </button>
       </form>
     </div>
   );
 };
-
-<p className="text-center mt-4">
-  Already have an account?{" "}
-  <span
-    className="text-blue-600 cursor-pointer"
-    onClick={() => navigate("/login")}
-  >
-    Login
-  </span>
-</p>
-
 
 export default Register;

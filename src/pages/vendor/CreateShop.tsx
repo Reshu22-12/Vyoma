@@ -1,110 +1,112 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateShop = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     description: "",
-    address: "",
+    location: "",
     latitude: "",
     longitude: "",
   });
 
-  const [message, setMessage] = useState("");
-
   const handleChange = (e: any) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/shops`,
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "http://localhost:8000/api/v1/shops",
         {
           name: form.name,
           description: form.description,
-          address: form.address,
-          latitude: Number(form.latitude),
-          longitude: Number(form.longitude),
+          address: form.location,
+          location: {
+            type: "Point",
+            coordinates: [
+              Number(form.longitude),
+              Number(form.latitude),
+            ],
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      setMessage("Shop created successfully ✅");
-      console.log(response.data);
+      alert("Shop created successfully ✅");
+      navigate("/vendor/dashboard");
+
     } catch (error: any) {
-      console.error(error);
-      setMessage("Error creating shop ❌");
+      console.error("STATUS:", error.response?.status);
+      console.error("DATA:", error.response?.data);
+      alert("Error creating shop ❌");
     }
   };
 
   return (
-    <section className="py-10">
-      <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-        <h2 className="text-2xl font-bold mb-6">Create Shop</h2>
+    <div className="max-w-lg mx-auto mt-10 bg-white p-6 rounded shadow">
+      <h2 className="text-2xl font-bold mb-6">Create Shop</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Shop Name"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          name="name"
+          placeholder="Shop Name"
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
 
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          />
+        <input
+          name="description"
+          placeholder="Description"
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
 
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        <input
+          name="location"
+          placeholder="Area (Ex: Balmatta)"
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
 
-          <input
-            type="text"
-            name="latitude"
-            placeholder="Latitude (e.g 12.9141)"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        <input
+          name="latitude"
+          placeholder="Latitude"
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
 
-          <input
-            type="text"
-            name="longitude"
-            placeholder="Longitude (e.g 74.8560)"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        <input
+          name="longitude"
+          placeholder="Longitude"
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded"
-          >
-            Create Shop
-          </button>
-        </form>
-
-        {message && (
-          <p className="mt-4 text-center text-sm">{message}</p>
-        )}
-      </div>
-    </section>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded"
+        >
+          Create Shop
+        </button>
+      </form>
+    </div>
   );
 };
 
