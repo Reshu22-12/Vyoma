@@ -3,9 +3,10 @@ import ProductCard from "@/components/products/ProductCard";
 
 const HotSelling = () => {
   return (
-    <section className="py-10 overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-bold mb-6">
+    <section className="py-1 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-0">
+<h2 className="text-xl sm:text-2xl font-bold mb-1 pb-4">
+
           Hot Selling
         </h2>
 

@@ -7,11 +7,12 @@ const Recommended = () => {
   );
 
   return (
-    <section className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-1 ">
+      <div className="max-w-7xl mx-auto px-0">
 
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold mb-1">
+
             Recommended For You
           </h2>
 
@@ -20,7 +21,7 @@ const Recommended = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
 
           {groceryProducts.map((item) => (
            <ProductCard

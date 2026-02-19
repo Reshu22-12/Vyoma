@@ -12,6 +12,8 @@ import MidAdCarousel from "@/components/carousel/MidAdCarousel"
 
 const Home = () => {
   return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
     <div className="space-y-16">
       <HeroCarousel />
       <ServiceHighlights />
@@ -24,6 +26,7 @@ const Home = () => {
       <Recommended />
        <QuickExplore />
     </div>
+    </section>
   );
 };
 

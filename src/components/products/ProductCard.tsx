@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { Button } from "@/components/ui/button";
 import { Heart, Share2, Clock } from "lucide-react";
-import { useState } from "react";
 
 type Props = {
   id: number;
@@ -21,12 +21,18 @@ const ProductCard = ({
 }: Props) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [liked, setLiked] = useState(false);
+  const {
+    addToWishlist,
+    removeFromWishlist,
+    isInWishlist,
+  } = useWishlist();
+
+  const liked = isInWishlist(id);
 
   return (
     <div
       className="
-        w-[190px]
+        w-[180px]
         bg-white
         rounded-xl
         border border-gray-200
@@ -35,17 +41,23 @@ const ProductCard = ({
         cursor-pointer
         relative
         p-3
+        mb-0
       "
       onClick={() => navigate(`/product/${id}`)}
     >
       {/* RIGHT SIDE ACTION BUTTONS */}
       <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
 
-        {/* Wishlist */}
+        {/* ❤️ Wishlist */}
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setLiked(!liked);
+
+            if (liked) {
+              removeFromWishlist(id);
+            } else {
+              addToWishlist({ id, name, price, image });
+            }
           }}
           className="
             bg-white
@@ -67,7 +79,7 @@ const ProductCard = ({
           />
         </button>
 
-        {/* Share */}
+        {/* 🔗 Share */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -98,7 +110,7 @@ const ProductCard = ({
         </button>
       </div>
 
-      {/* IMAGE WRAPPER (IMPORTANT FIX) */}
+      {/* IMAGE */}
       <div className="h-[130px] overflow-hidden flex items-center justify-center mb-3 rounded-lg">
         <img
           src={image}
@@ -141,13 +153,13 @@ const ProductCard = ({
             bg-white
             text-blue-600
             border border-blue-600
-            hover:bg-green-50
+            hover:bg-blue-600
+            hover:text-white
             px-4
             text-xs
             font-semibold
             rounded-md
-            hover:text-white
-            hover:bg-blue-600
+            transition
           "
           onClick={(e) => {
             e.stopPropagation();

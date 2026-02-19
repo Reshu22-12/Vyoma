@@ -6,10 +6,10 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 
-import ad1 from "@/assets/images/ad1.jpg"
-import ad2 from "@/assets/images/ad6.jpg"
-import ad3 from "@/assets/images/ad12.jpg"
-import ad4 from "@/assets/images/ad13.jpg"
+import ad1 from "@/assets/images/banner1.jpg"
+import ad2 from "@/assets/images/banner2.jpg.jpeg"
+import ad3 from "@/assets/images/banner1.jpg"
+import ad4 from "@/assets/images/banner3.jpg"
 
 const carouselAds = [ad3, ad4]
 
@@ -22,55 +22,51 @@ const MidAdCarousel = () => {
   )
 
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 space-y-6">
+    <section className="mt-2">
+      <div className="max-w-7xl mx-auto space-y-3">
 
-        {/* 🔹 TOP 2 STATIC BANNERS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* ⭐ TOP BANNERS */}
+        <div className="grid grid-cols-2 gap-2">
 
-          <div className="rounded-2xl overflow-hidden shadow-md">
-            <img
-              src={ad1}
-              alt="Advertisement"
-              className="w-full h-[220px] md:h-[260px] object-cover"
-            />
-          </div>
-
-          <div className="rounded-2xl overflow-hidden shadow-md">
-            <img
-              src={ad2}
-              alt="Advertisement"
-              className="w-full h-[220px] md:h-[260px] object-cover"
-            />
-          </div>
+          {[ad1, ad2].map((img, i) => (
+            <div
+              key={i}
+              className="rounded-xl sm:rounded-2xl overflow-hidden shadow-sm"
+            >
+              {/* Maintain banner ratio */}
+              <div className="relative w-full aspect-[3/1] bg-gray-100">
+                <img
+                  src={img}
+                  alt="Advertisement"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          ))}
 
         </div>
 
-        {/* 🔹 FULL WIDTH CAROUSEL */}
-        <div className="rounded-2xl overflow-hidden shadow-md">
-         <div className="w-screen -mx-4 md:mx-0"></div>
+        {/* ⭐ FULL WIDTH CAROUSEL */}
+        <div className="rounded-xl sm:rounded-2xl overflow-hidden shadow-sm">
           <Carousel
-            opts={{
-              loop: true,
-            }}
+            opts={{ loop: true }}
             plugins={[autoplay.current]}
             className="w-full"
           >
             <CarouselContent>
               {carouselAds.map((img, index) => (
                 <CarouselItem key={index}>
-                  <div className="h-[260px] md:h-[380px]">
+                  <div className="relative w-full aspect-[3/1] bg-gray-100">
                     <img
                       src={img}
                       alt="Advertisement"
-                      className="w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
           </Carousel>
-
         </div>
 
       </div>
