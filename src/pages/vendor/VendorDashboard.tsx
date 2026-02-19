@@ -50,70 +50,59 @@ const VendorDashboard = () => {
       }
     };
 
+    const addDummyShops = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "http://localhost:8000/api/v1/shops/seed",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Dummy shops added ✅");
+    window.location.reload();
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
     fetchMyShops();
   }, []);
 
   return (
-    <div className="p-8 min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Vendor Dashboard</h1>
+     <div>
+      <h1 className="text-3xl font-bold mb-8">Overview</h1>
 
-      <button
-        onClick={() => navigate("/vendor/create-shop")}
-        className="mb-8 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg"
-      >
-        + Create New Shop
-      </button>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-      <h2 className="text-2xl font-semibold mb-4">My Shops</h2>
-
-      {loading ? (
-        <p>Loading shops...</p>
-      ) : shops.length === 0 ? (
-        <p>No shops created yet.</p>
-      ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {shops.map((shop) => (
-            <div
-              key={shop._id}
-              className="bg-white p-6 rounded-xl shadow"
-            >
-              <h3 className="text-xl font-bold">{shop.name}</h3>
-
-              <p>{shop.description}</p>
-
-              {typeof shop.location === "string" && (
-                <p>📍 {shop.location}</p>
-              )}
-
-              {shop.coordinates &&
-                Array.isArray(shop.coordinates.coordinates) &&
-                shop.coordinates.coordinates.length === 2 && (
-                  <p className="text-sm text-gray-500">
-                    Lat: {shop.coordinates.coordinates[1]} | 
-                    Lng: {shop.coordinates.coordinates[0]}
-                  </p>
-                )}
-
-              <div className="mt-2">
-                {shop.isApproved ? (
-                  <span className="text-green-600">Approved</span>
-                ) : (
-                  <span className="text-yellow-600">Pending</span>
-                )}
-              </div>
-
-              <button
-                onClick={() =>
-                  navigate(`/vendor/add-product/${shop._id}`)
-                }
-                className="mt-3 bg-green-600 text-white px-3 py-1 rounded"
-              >
-                Add Product
-              </button>
-            </div>
-          ))}
+        <div className="bg-white p-6 rounded-xl shadow">
+          <h2 className="text-gray-500">Total Shops</h2>
+          <p className="text-3xl font-bold mt-2">2</p>
         </div>
-      )}
+
+        <div className="bg-white p-6 rounded-xl shadow">
+          <h2 className="text-gray-500">Total Products</h2>
+          <p className="text-3xl font-bold mt-2">0</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow">
+          <h2 className="text-gray-500">Orders</h2>
+          <p className="text-3xl font-bold mt-2">0</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow">
+          <h2 className="text-gray-500">Revenue</h2>
+          <p className="text-3xl font-bold mt-2">₹0</p>
+        </div>
+
+      </div>
     </div>
   );
 };

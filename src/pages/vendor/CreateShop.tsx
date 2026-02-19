@@ -1,112 +1,66 @@
 import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import StepBasic from "../../components/shops/CreateShop/StepBasic";
+import StepContact from "../../components/shops/CreateShop/StepContact";
+import StepLegal from "../../components/shops/CreateShop/StepLegal";
+import StepReview from "../../components/shops/CreateShop/StepReview";
+
+
 
 const CreateShop = () => {
-  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
 
-  const [form, setForm] = useState({
-    name: "",
+  const [formData, setFormData] = useState({
+    ownerName: "",
+    businessType: "",
+    shopName: "",
+    logo: "",
     description: "",
-    location: "",
+    yearsOfOperation: "",
+    phone: "",
+    address: "",
+    area: "",
     latitude: "",
     longitude: "",
+    gstNumber: "",
+    shopLicense: "",
+    udyamNumber: "",
+    fssaiNumber: "",
+    tradeLicense: "",
   });
 
-  const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      const token = localStorage.getItem("token");
-
-      await axios.post(
-        "http://localhost:8000/api/v1/shops",
-        {
-          name: form.name,
-          description: form.description,
-          address: form.location,
-          location: {
-            type: "Point",
-            coordinates: [
-              Number(form.longitude),
-              Number(form.latitude),
-            ],
-          },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert("Shop created successfully ✅");
-      navigate("/vendor/dashboard");
-
-    } catch (error: any) {
-      console.error("STATUS:", error.response?.status);
-      console.error("DATA:", error.response?.data);
-      alert("Error creating shop ❌");
-    }
-  };
-
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">Create Shop</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="name"
-          placeholder="Shop Name"
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
+    <>
+      {step === 1 && (
+        <StepBasic 
+          formData={formData} 
+          setFormData={setFormData} 
+          setStep={setStep}
         />
+      )}
 
-        <input
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
+      {step === 2 && (
+        <StepContact 
+          formData={formData} 
+          setFormData={setFormData} 
+          setStep={setStep}
         />
+      )}
 
-        <input
-          name="location"
-          placeholder="Area (Ex: Balmatta)"
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
+      {step === 3 && (
+        <StepLegal 
+          formData={formData} 
+          setFormData={setFormData} 
+          setStep={setStep}
         />
+      )}
 
-        <input
-          name="latitude"
-          placeholder="Latitude"
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
+      {step === 4 && (
+        <StepReview 
+          formData={formData} 
+          setStep={setStep}
         />
-
-        <input
-          name="longitude"
-          placeholder="Longitude"
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded"
-        >
-          Create Shop
-        </button>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 

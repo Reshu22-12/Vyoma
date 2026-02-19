@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 const Navbar = () => {
   const { cart } = useCart();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const totalItems = cart.reduce(
     (sum, item) => sum + item.quantity,
@@ -19,7 +20,6 @@ const Navbar = () => {
     role: string;
   } | null>(null);
 
-  // ✅ Load user from localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -31,18 +31,23 @@ const Navbar = () => {
     }
   }, []);
 
-  // ✅ Logout
   const handleLogout = () => {
     localStorage.clear();
     setUser(null);
     navigate("/");
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!searchQuery.trim()) return;
+
+    navigate(`/search?q=${searchQuery}`);
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-        {/* TOP ROW */}
         <div className="h-16 flex items-center justify-between">
 
           {/* LOGO */}
@@ -51,25 +56,29 @@ const Navbar = () => {
           </Link>
 
           {/* SEARCH */}
-          <div className="hidden md:flex items-center w-[420px] relative">
+          <form
+            onSubmit={handleSearch}
+            className="hidden md:flex items-center w-[420px] relative"
+          >
             <Search className="absolute left-4 text-gray-400 w-4 h-4" />
             <Input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search shops or products..."
               className="pl-11 pr-4 rounded-full bg-gray-100"
             />
-          </div>
+          </form>
 
           {/* RIGHT SECTION */}
           <div className="flex items-center gap-3">
 
-            {/* Wishlist */}
             <Link to="/wishlist">
               <Button variant="ghost" className="p-2 rounded-full">
                 <Heart className="w-5 h-5 text-gray-700" />
               </Button>
             </Link>
 
-            {/* Cart */}
             <Link to="/cart">
               <Button variant="ghost" className="p-2 rounded-full relative">
                 <ShoppingCart className="w-5 h-5 text-gray-700" />
@@ -81,7 +90,6 @@ const Navbar = () => {
               </Button>
             </Link>
 
-            {/* 👇 If NOT logged in */}
             {!user && (
               <Link to="/login">
                 <Button variant="ghost" className="p-2 rounded-full">
@@ -90,14 +98,10 @@ const Navbar = () => {
               </Link>
             )}
 
-            {/* 👇 If Logged in */}
             {user && (
               <div className="flex items-center gap-3">
-
                 <div className="text-right">
-                  <p className="text-sm font-semibold">
-                    {user.name}
-                  </p>
+                  <p className="text-sm font-semibold">{user.name}</p>
                   <p className="text-xs text-gray-500 capitalize">
                     {user.role}
                   </p>
