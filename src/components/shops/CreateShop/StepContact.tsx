@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,7 @@ interface Props {
 }
 
 const StepContact: React.FC<Props> = ({ formData, setFormData, setStep }) => {
+  const [errors, setErrors] = useState<any>({});
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
@@ -21,22 +21,38 @@ const StepContact: React.FC<Props> = ({ formData, setFormData, setStep }) => {
     }));
   };
 
-  const getLocation = () => {
+   // ✅ AUTO FETCH LOCATION
+ useEffect(() => {
+  try {
     if (!navigator.geolocation) return;
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      setFormData((prev: any) => ({
-        ...prev,
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      }));
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setFormData((prev: any) => ({
+          ...prev,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        }));
+      },
+      () => {}
+    );
+  } catch (err) {
+    console.log("Geo failed safely");
+  }
+}, []);
+
+  const validate = () => {
+    const newErrors: any = {};
+    if (!formData.phone) newErrors.phone = "Phone required";
+    if (!formData.address) newErrors.address = "Address required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
 
-      {/* LEFT SIDE */}
+      {/* LEFT BLUE PANEL */}
       <div className="hidden md:flex bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-16 flex-col justify-center">
         <h1 className="text-4xl font-bold mb-6">
           Help Customers Find You 📍
@@ -46,111 +62,95 @@ const StepContact: React.FC<Props> = ({ formData, setFormData, setStep }) => {
         </p>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT FORM */}
       <div className="flex items-center justify-center p-10 bg-muted/30">
 
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
           className="w-full max-w-2xl"
         >
-          <Card className="shadow-2xl rounded-3xl border-0">
-
+          <Card className="shadow-xl rounded-2xl">
             <CardHeader>
-              <div className="text-sm text-muted-foreground mb-2">
-                Step 2 of 4
-              </div>
-              <CardTitle className="text-2xl font-semibold">
-                📞 Contact & Location
-              </CardTitle>
+              <CardTitle>Step 2 of 4 — Contact Details</CardTitle>
             </CardHeader>
 
-            <CardContent className="space-y-6 p-8">
+            <CardContent className="space-y-6">
 
-              <div className="space-y-2">
-                <Label>Phone Number</Label>
-                <Input
-                  placeholder="Enter phone number"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    handleChange("phone", e.target.value)
-                  }
-                />
-              </div>
+              <Field
+                label="Phone"
+                value={formData.phone}
+                error={errors.phone}
+                onChange={(v) => handleChange("phone", v)}
+              />
 
-              <div className="space-y-2">
-                <Label>Shop Address</Label>
-                <Input
-                  placeholder="Enter full address"
-                  value={formData.address}
-                  onChange={(e) =>
-                    handleChange("address", e.target.value)
-                  }
-                />
-              </div>
+              <Field
+                label="Address"
+                value={formData.address}
+                error={errors.address}
+                onChange={(v) => handleChange("address", v)}
+              />
 
-              <div className="space-y-2">
-                <Label>Area</Label>
-                <Input
-                  placeholder="Area (e.g. Balmatta)"
-                  value={formData.area}
-                  onChange={(e) =>
-                    handleChange("area", e.target.value)
-                  }
-                />
-              </div>
+              <Field
+                label="Area"
+                value={formData.area}
+                onChange={(v) => handleChange("area", v)}
+              />
 
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={getLocation}
-                className="w-full"
-              >
-                📍 Use My Current Location
-              </Button>
 
+              {/* Show detected location */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Latitude</Label>
-                  <Input
-                    value={formData.latitude}
-                    onChange={(e) =>
-                      handleChange("latitude", e.target.value)
-                    }
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Longitude</Label>
-                  <Input
-                    value={formData.longitude}
-                    onChange={(e) =>
-                      handleChange("longitude", e.target.value)
-                    }
-                  />
-                </div>
+                <Field
+                  label="Latitude"
+                  value={formData.latitude}
+                  onChange={(v) => handleChange("latitude", v)}
+                />
+                <Field
+                  label="Longitude"
+                  value={formData.longitude}
+                  onChange={(v) => handleChange("longitude", v)}
+                />
               </div>
 
-              <div className="flex justify-between pt-4">
+              <div className="flex justify-between">
                 <Button variant="outline" onClick={() => setStep(1)}>
                   ← Back
                 </Button>
 
-                <Button onClick={() => setStep(3)}>
+                <Button
+                  onClick={() => {
+                    if (validate()) setStep(3);
+                  }}
+                >
                   Next →
                 </Button>
               </div>
 
             </CardContent>
-
           </Card>
         </motion.div>
 
       </div>
-
     </div>
   );
 };
+
+const Field = ({ label, value, onChange, error }: any) => (
+  <div className="space-y-2">
+    <Label>{label}</Label>
+    <Input
+  value={value || ""}
+  onChange={(e) => onChange(e.target.value)}
+  className={`
+    focus:outline-none 
+    focus:ring-0 
+    focus-visible:ring-0 
+    focus-visible:outline-none
+    ${error ? "border-red-500 focus:border-red-500" : ""}
+  `}
+/>
+    {error && <p className="text-xs text-red-500">{error}</p>}
+  </div>
+);
 
 export default StepContact;
